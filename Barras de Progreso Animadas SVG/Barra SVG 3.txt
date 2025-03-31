@@ -1,0 +1,39 @@
+Barra SVG 3 = 
+VAR _Progreso = SUM('Tabla Vendedor'[Progreso])
+VAR _AnchoTotal = 300
+VAR _AltoTotal = 70
+VAR _RadioEsquinas = 20
+VAR _Margen = 10
+
+VAR _AnchoMax = _AnchoTotal - 2 * _Margen
+VAR _AnchoBarra = MAX(0, MIN(_AnchoMax, _AnchoMax * _Progreso))
+
+VAR svg = 
+    "<svg xmlns='http://www.w3.org/2000/svg' width='" & 
+    FORMAT(_AnchoTotal, "0") & "' height='" & FORMAT(_AltoTotal, "0") & "'>" & 
+
+        "<defs>" &
+            "<linearGradient id='grad'>" & 
+                "<stop offset='0%' stop-color='#FF3B01'/>" & 
+                "<stop offset='100%' stop-color='#FFE014'/>" & 
+            "</linearGradient>" &
+        "</defs>" & 
+
+        "<rect x='" & FORMAT(_Margen, "0") & "' y='" & FORMAT(_Margen, "0") & "' width='" & 
+        FORMAT(_AnchoMax, "0") & "' height='" & FORMAT(_AltoTotal - 2 * _Margen, "0") & 
+        "' rx='" & FORMAT(_RadioEsquinas, "0") & "' ry='" & FORMAT(_RadioEsquinas, "0") & "' fill='#E0E0E0'/>" & 
+
+        "<rect x='" & FORMAT(_Margen, "0") & "' y='" & FORMAT(_Margen, "0") & "' width='0' height='" & 
+        FORMAT(_AltoTotal - 2 * _Margen, "0") & "' rx='" & FORMAT(_RadioEsquinas, "0") & "' ry='" & FORMAT(_RadioEsquinas, "0") & 
+        "' fill='url(#grad)'>" &
+            "<animate attributeName='width' from='0' to='" & FORMAT(_AnchoBarra, "0") & "' dur='2s' fill='freeze' />" &
+        "</rect>" & 
+
+        "<text x='" & FORMAT(_Margen + 15, "0") & "' y='" & FORMAT(_AltoTotal / 1.6, "0") & 
+        "' font-family='Calibri' font-size='24' font-weight='bold' fill='white'>" & 
+        FORMAT(_Progreso * 100, "0") & "%</text>" & 
+
+    "</svg>"
+
+RETURN 
+"data:image/svg+xml;utf8," & svg

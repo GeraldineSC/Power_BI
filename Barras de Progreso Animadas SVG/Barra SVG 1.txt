@@ -1,0 +1,29 @@
+Barra SVG 1 = 
+
+VAR _Progreso = SUM('Tabla Vendedor'[Progreso])
+VAR _Porcentaje = INT(MIN(_Progreso, 1) * 100)
+VAR _PorcentajeTexto = FORMAT(_Progreso * 100, "0") & "%"
+VAR _AnchoMax = 300
+VAR _Alto = 60
+VAR _AnchoCalculado = _Porcentaje * (_AnchoMax / 100)
+VAR _AnchoBarra = MAX(10, _AnchoCalculado)
+VAR _RadioEsquinas = IF(_AnchoBarra < 40, 5, 20)
+
+RETURN
+"data:image/svg+xml;utf8," &
+"<svg width='500' height='100' xmlns='http://www.w3.org/2000/svg'>" &
+  "<defs>" &
+    "<linearGradient id='grad' x1='0%' y1='0%' x2='80%' y2='0%'>" &
+      "<stop offset='0%' stop-color='#1C3AFE' />" &
+      "<stop offset='100%' stop-color='#4DE7FF' />" &
+    "</linearGradient>" &
+  "</defs>" &
+  "<rect x='0' y='0' width='500' height='100' rx='30' ry='30' fill='#F4F4F4' />" &
+  "<rect x='10' y='30' width='150' height='40' rx='20' ry='20' fill='#FFFFFF' />" &
+  "<text x='85' y='60' font-family='Calibri' font-size='34' font-weight='bold' fill='#000000' text-anchor='middle'>" &
+    _PorcentajeTexto & "</text>" &
+  "<rect x='170' y='20' width='" & _AnchoBarra & "' height='60' rx='" & _RadioEsquinas & "' ry='" & _RadioEsquinas & "' fill='url(#grad)'>" &
+    "<animate attributeName='width' from='0' to='" & _AnchoBarra & "' dur='2s' fill='freeze' />" &
+  "</rect>" &
+
+"</svg>"
