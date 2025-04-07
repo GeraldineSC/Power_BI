@@ -1,0 +1,48 @@
+Barra SVG 4 = 
+VAR _Progreso = SUM('Tabla Vendedor'[Progreso])
+VAR _AnchoTotal = 400
+VAR _AltoTotal = 80
+VAR _RadioEsquinas = 20
+VAR _Margen = 10
+
+VAR _AnchoTexto = 90
+VAR _AltoTexto = 40
+VAR _xTexto = _Margen
+VAR _yTexto = (_AltoTotal - _AltoTexto) / 2
+
+VAR anchoMaximoBarra = _AnchoTotal - _AnchoTexto - 2 * _Margen - 10
+VAR anchoBarra = MAX(0, MIN(anchoMaximoBarra, anchoMaximoBarra * _Progreso))
+
+VAR svg = 
+    "<svg xmlns='http://www.w3.org/2000/svg' width='" & 
+    FORMAT(_AnchoTotal, "0") & "' height='" & FORMAT(_AltoTotal, "0") & "'>" & 
+
+    "<defs>" &
+        "<linearGradient id='grad'>" & 
+            "<stop offset='0%' stop-color='#003EA1'/>" & 
+            "<stop offset='100%' stop-color='#00EFAF'/>" & 
+        "</linearGradient>" &
+    "</defs>" & 
+
+    "<rect x='" & FORMAT(_Margen + _AnchoTexto + 10, "0") & "' y='" & FORMAT(_Margen, "0") & "' width='" & 
+    FORMAT(anchoMaximoBarra, "0") & "' height='" & FORMAT(_AltoTotal - 2 * _Margen, "0") & 
+    "' rx='" & FORMAT(_RadioEsquinas, "0") & "' ry='" & FORMAT(_RadioEsquinas, "0") & "' fill='#E0E0E0'/>" & 
+
+    "<rect x='" & FORMAT(_Margen + _AnchoTexto + 10, "0") & "' y='" & FORMAT(_Margen, "0") & "' width='0' height='" & 
+    FORMAT(_AltoTotal - 2 * _Margen, "0") & "' rx='" & FORMAT(_RadioEsquinas, "0") & "' ry='" & FORMAT(_RadioEsquinas, "0") & 
+    "' fill='url(#grad)'>" &
+        "<animate attributeName='width' from='0' to='" & FORMAT(anchoBarra, "0") & "' dur='2s' fill='freeze' />" &
+    "</rect>" & 
+
+    "<rect x='" & FORMAT(_xTexto, "0") & "' y='" & FORMAT(_yTexto, "0") & 
+    "' width='" & FORMAT(_AnchoTexto, "0") & "' height='" & FORMAT(_AltoTexto, "0") & 
+    "' rx='10' ry='10' fill='white' fill-opacity='0.8'/>" & 
+
+    "<text x='" & FORMAT(_xTexto + _AnchoTexto / 2, "0") & "' y='" & FORMAT(_yTexto + _AltoTexto / 1.5, "0") & 
+    "' font-family='Calibri' font-size='32' fill='black' text-anchor='middle'>" & 
+    FORMAT(_Progreso * 100, "0") & "%</text>" & 
+
+    "</svg>"
+
+RETURN 
+"data:image/svg+xml;utf8," & svg

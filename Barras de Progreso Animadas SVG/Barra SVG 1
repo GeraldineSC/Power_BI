@@ -26,4 +26,8 @@ RETURN
     "<animate attributeName='width' from='0' to='" & _AnchoBarra & "' dur='2s' fill='freeze' />" &
   "</rect>" &
 
+<<<<<<< HEAD
 "</svg>"
+=======
+"</svg>"
+>>>>>>> 2a990ee20bb49f129a2a4e16c3595137927b43a0
