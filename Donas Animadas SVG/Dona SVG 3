@@ -1,0 +1,40 @@
+Dona SVG 3 = 
+VAR _TasaCumplimiento = [% Tickets Resueltos]
+VAR _Porcentaje = MIN(_TasaCumplimiento, 1)
+VAR _PorcentajeTexto = FORMAT(_TasaCumplimiento, "0%")
+VAR _Radio = 80
+VAR _Centro = 100
+VAR _GrosorBorde = 18
+VAR _Circunferencia = 2 * PI() * _Radio
+VAR _CircunferenciaTexto = FORMAT(_Circunferencia, "0")
+VAR _CircunferenciaFaltante = FORMAT(_Circunferencia * (1 - _Porcentaje), "0")
+
+RETURN
+"data:image/svg+xml;utf8," &
+"<svg width='220' height='220' viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'>" &
+
+  "<defs>" &
+    "<linearGradient id='gradienteSunset' x1='0%' y1='0%' x2='100%' y2='100%'>" &
+      "<stop offset='0%' stop-color='#ff5f6d'/>" &
+      "<stop offset='100%' stop-color='#ffc371'/>" &
+    "</linearGradient>" &
+  "</defs>" &
+
+  "<circle cx='" & _Centro & "' cy='" & _Centro & "' r='" & _Radio & "' " &
+    "stroke='#f0f0f0' stroke-width='" & _GrosorBorde & "' fill='none'/>" &
+
+  "<circle cx='" & _Centro & "' cy='" & _Centro & "' r='" & _Radio & "' " &
+    "stroke='url(#gradienteSunset)' stroke-width='" & _GrosorBorde & "' fill='none' " &
+    "stroke-dasharray='" & _CircunferenciaTexto & "' " &
+    "stroke-dashoffset='" & _CircunferenciaTexto & "' " &
+    "stroke-linecap='round' transform='rotate(-90 " & _Centro & " " & _Centro & ")'>" &
+      "<animate attributeName='stroke-dashoffset' from='" & _CircunferenciaTexto & "' to='" & _CircunferenciaFaltante & "' dur='1.5s' fill='freeze' />" &
+  "</circle>" &
+
+  "<rect x='70' y='88' width='60' height='28' rx='14' ry='14' fill='#ffffff' stroke='#ddd' stroke-width='1' />" &
+
+  "<text x='100' y='107' font-family='Segoe UI' font-size='14' text-anchor='middle' fill='#333333'>" &
+    _PorcentajeTexto &
+  "</text>" &
+
+"</svg>"

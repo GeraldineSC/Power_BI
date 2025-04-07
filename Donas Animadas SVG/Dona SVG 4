@@ -1,0 +1,45 @@
+Dona SVG 4 = 
+VAR TasaCumplimiento = [% Tickets Resueltos]
+VAR Porcentaje = MIN(TasaCumplimiento, 1)
+VAR PorcentajeTexto = FORMAT(TasaCumplimiento, "0%")
+VAR Radio = 70
+VAR Centro = 100
+VAR GrosorBorde = 16
+VAR Circunferencia = 2 * PI() * Radio
+VAR CircunferenciaTexto = FORMAT(Circunferencia, "0")
+VAR CircunferenciaFaltante = FORMAT(Circunferencia * (1 - Porcentaje), "0")
+
+RETURN
+"data:image/svg+xml;utf8," &
+"<svg width='220' height='220' viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'>" &
+
+  "<defs>" &
+    "<linearGradient id='gradNeonBlue' x1='0%' y1='0%' x2='100%' y2='100%'>" &
+      "<stop offset='0%' stop-color='#00f0ff'/>" &
+      "<stop offset='100%' stop-color='#3b00ff'/>" &
+    "</linearGradient>" &
+  "</defs>" &
+
+  "<circle cx='" & Centro & "' cy='" & Centro & "' r='" & (Radio + 10) & "' " &
+    "stroke='#f0f0f0' stroke-width='4' fill='none'/>" &
+
+  "<circle cx='" & Centro & "' cy='" & Centro & "' r='" & Radio & "' " &
+    "stroke='#eee' stroke-width='" & GrosorBorde & "' fill='none'/>" &
+
+  "<circle cx='" & Centro & "' cy='" & Centro & "' r='" & Radio & "' " &
+    "stroke='url(#gradNeonBlue)' stroke-width='" & GrosorBorde & "' fill='none' " &
+    "stroke-dasharray='" & CircunferenciaTexto & "' " &
+    "stroke-dashoffset='" & CircunferenciaTexto & "' " &
+    "stroke-linecap='round' transform='rotate(-90 " & Centro & " " & Centro & ")'>" &
+      "<animate attributeName='stroke-dashoffset' from='" & CircunferenciaTexto & "' to='" & CircunferenciaFaltante & "' dur='1.5s' fill='freeze' />" &
+  "</circle>" &
+
+  "<ellipse cx='100' cy='105' rx='40' ry='20' fill='#a5ebff' fill-opacity='0.4'/>" &
+
+  "<rect x='65' y='90' width='70' height='30' rx='15' ry='15' fill='white' stroke='#ccc' stroke-width='0.5'/>" &
+
+  "<text x='100' y='109' font-family='Segoe UI' font-size='14' text-anchor='middle' fill='#003344'>" &
+    PorcentajeTexto &
+  "</text>" &
+
+"</svg>"

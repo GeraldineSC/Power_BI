@@ -1,0 +1,40 @@
+Dona SVG 2 = 
+VAR TasaCumplimiento = [% Tickets Resueltos]
+VAR Porcentaje = MIN(TasaCumplimiento, 1)
+VAR PorcentajeTexto = FORMAT(TasaCumplimiento, "0%")
+VAR Radio = 80
+VAR Centro = 100
+VAR GrosorBorde = 30
+VAR Circunferencia = 2 * PI() * Radio
+VAR CircunferenciaTexto = FORMAT(Circunferencia, "0")
+VAR CircunferenciaFaltante = FORMAT(Circunferencia * (1 - Porcentaje), "0")
+
+RETURN
+"data:image/svg+xml;utf8," &
+"<svg width='220' height='220' viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'>" &
+
+  "<defs>" &
+    "<linearGradient id='gradienteAzulVerde' x1='0%' y1='0%' x2='100%' y2='100%'>" &
+      "<stop offset='0%' stop-color='#004AAD'/>" &
+      "<stop offset='100%' stop-color='#00F5A0'/>" &
+    "</linearGradient>" &
+  "</defs>" &
+
+  "<circle cx='" & Centro & "' cy='" & Centro & "' r='" & Radio & "' " &
+    "stroke='#e0e0e0' stroke-width='" & GrosorBorde & "' fill='none'/>" &
+
+  "<circle cx='" & Centro & "' cy='" & Centro & "' r='" & Radio & "' " &
+    "stroke='url(#gradienteAzulVerde)' stroke-width='" & GrosorBorde & "' fill='none' " &
+    "stroke-dasharray='" & CircunferenciaTexto & "' " &
+    "stroke-dashoffset='" & CircunferenciaTexto & "' " &
+    "stroke-linecap='round' transform='rotate(-90 " & Centro & " " & Centro & ")'>" &
+      "<animate attributeName='stroke-dashoffset' from='" & CircunferenciaTexto & "' to='" & CircunferenciaFaltante & "' dur='1.5s' fill='freeze' />" &
+  "</circle>" &
+
+  "<rect x='65' y='90' width='70' height='30' rx='10' ry='10' fill='#F0F0F0' />" &
+
+  "<text x='100' y='110' font-family='Calibri' font-size='16' text-anchor='middle' fill='#000000'>" &
+    PorcentajeTexto &
+  "</text>" &
+
+"</svg>"
